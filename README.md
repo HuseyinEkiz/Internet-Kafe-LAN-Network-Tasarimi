@@ -1,4 +1,4 @@
-# Marmara-Kamp-s-CAN-Campus-Area-Network-Tasarimi
+# Marmara-Kampüs-CAN-Campus-Area-Network-Tasarimi
 Hüseyin Ekiz – 170424051    Cem Anıl Erdem – 170424041
 
 PROJE FİNAL RAPORU
