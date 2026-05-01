@@ -1,8 +1,20 @@
-# Marmara-Kampüs-CAN-Campus-Area-Network-Tasarimi
-Hüseyin Ekiz – 170424051    Cem Anıl Erdem – 170424041
+İnternet Kafe Ağ Tasarımı
+Bilişim Teknolojileri Departmanı
+BLM2006 – Bilgisayar Ağlarına Giriş
 
 PROJE FİNAL RAPORU
-Marmara Kampüsü CAN (Campus Area Network) Tasarımı
+İnternet Kafe LAN (Local Area Network) Tasarımı
+
+Grup Üyeleri
+Hüseyin Ekiz – 170424051
+Cem Anıl Erdem – 170424041
+Ders
+BLM2006 – Bilgisayar Ağlarına Giriş
+Kullanılan Araçlar
+Cisco Packet Tracer
+Tarih
+Mayıs 2026
+ 
  
 İçindekiler
 1. Giriş
@@ -24,15 +36,15 @@ Marmara Kampüsü CAN (Campus Area Network) Tasarımı
 6. Kaynakça
  
 1. Giriş
-Bu proje, Marmara Üniversitesi kampüs sınırları içerisindeki tüm akademik ve idari birimlerin güvenilir, kesintisiz ve yüksek performanslı bir ağ altyapısı üzerinden birbiriyle iletişim kurmasını sağlamak amacıyla tasarlanmış bir CAN (Campus Area Network – Kampüs Alan Ağı) mimarisini içermektedir.
-Günümüz üniversite kampüslerinde eş zamanlı olarak yüzlerce cihaz ağ kaynaklarını kullanmaktadır. Bu durum, ağ yönetimini, güvenliğini ve erişilebilirliğini kritik bir mühendislik sorunu hâline getirmektedir. Geleneksel düz (flat) ağ mimarileri, büyük ölçekli ortamlarda yayın fırtınaları, yetersiz güvenlik izolasyonu ve ölçeklenebilirlik sorunlarına yol açmaktadır.
-Bu proje kapsamında geliştirilen çözüm; VLAN tabanlı ağ segmentasyonu, Inter-VLAN yönlendirme, OSPF dinamik yönlendirme protokolü, NAT ile internet erişimi, ACL ve Firewall ile katmanlı güvenlik, HSRP ile yedeklilik ve EtherChannel ile yüksek bant genişliği bileşenlerini bir arada kullanarak profesyonel düzeyde bir kampüs ağı ortaya koymaktadır. Kablosuz (Wi-Fi) erişim noktaları ile de mobil kullanıcı desteği sağlanmaktadır.
+Bu proje, bir internet kafenin tüm bilgisayar sistemlerinin, sunucularının ve ağ cihazlarının güvenilir, kesintisiz ve yüksek performanslı bir ağ altyapısı üzerinden birbiriyle iletişim kurmasını sağlamak amacıyla tasarlanmış bir LAN (Local Area Network – Yerel Alan Ağı) mimarisini içermektedir.
+Günümüz internet kafelerinde eş zamanlı olarak onlarca kullanıcı ağ kaynaklarını yoğun biçimde kullanmaktadır. Bu durum, ağ yönetimini, güvenliğini ve erişilebilirliğini kritik bir mühendislik sorunu hâline getirmektedir. Geleneksel düz (flat) ağ mimarileri, büyük ölçekli ortamlarda yayın fırtınaları, yetersiz güvenlik izolasyonu ve ölçeklenebilirlik sorunlarına yol açmaktadır.
+Bu proje kapsamında geliştirilen çözüm; VLAN tabanlı ağ segmentasyonu, Inter-VLAN yönlendirme, OSPF dinamik yönlendirme protokolü, NAT ile internet erişimi, ACL ve Firewall ile katmanlı güvenlik, HSRP ile yedeklilik ve EtherChannel ile yüksek bant genişliği bileşenlerini bir arada kullanarak profesyonel düzeyde bir internet kafe ağı ortaya koymaktadır. Kablosuz (Wi-Fi) erişim noktaları ile de mobil kullanıcı desteği sağlanmaktadır.
 Tüm tasarım ve simülasyon çalışmaları Cisco Packet Tracer ortamında gerçekleştirilmiş; konfigürasyonlar IOS komut satırı arayüzü (CLI) kullanılarak uygulanmıştır.
  
 2. Yöntem
 2.1 Proje Kapsamı ve Hedefler
 Proje aşağıdaki temel hedefleri karşılayacak biçimde tasarlanmıştır:
-•	Kampüs genelinde birimleri mantıksal olarak ayıran VLAN yapısı oluşturmak
+•	İnternet kafe genelinde birimleri mantıksal olarak ayıran VLAN yapısı oluşturmak
 •	VLAN'lar arası iletişimi yönetilen yönlendirme ile sağlamak (Inter-VLAN Routing)
 •	OSPF protokolü ile dinamik ve ölçeklenebilir yönlendirme gerçekleştirmek
 •	NAT aracılığıyla tüm iç ağın güvenli biçimde internete çıkışını sağlamak
@@ -59,7 +71,7 @@ Wi-Fi (802.11)	Kablosuz istemci erişimi
 2.3 Ağ Tasarım Aşamaları
 Proje aşağıdaki aşamalar izlenerek geliştirilmiştir:
 Aşama 1 – Gereksinimlerin Belirlenmesi
-Kampüs birimlerinin ağ ihtiyaçları analiz edilmiş; akademik, idari ve misafir kullanıcı kategorileri belirlenmiştir. Her kategori için ayrı VLAN ve güvenlik politikaları tanımlanmıştır.
+İnternet kafenin ağ ihtiyaçları analiz edilmiş; müşteri, personel ve yönetim kullanıcı kategorileri belirlenmiştir. Her kategori için ayrı VLAN ve güvenlik politikaları tanımlanmıştır.
 Aşama 2 – Topoloji Tasarımı
 Üç katmanlı hiyerarşik ağ modeli (Çekirdek – Dağıtım – Erişim) benimsenmiştir. Çekirdek katmanda yedekli yönlendiriciler (HSRP), dağıtım katmanında katman-3 anahtarlar ve erişim katmanında uç cihazlara bağlı katman-2 anahtarlar konumlandırılmıştır.
 Aşama 3 – Konfigürasyon ve Test
@@ -68,7 +80,7 @@ Cisco Packet Tracer üzerinde tüm cihazlar konfigüre edilmiş; bağlantı test
 3. Bulgular
 Bu bölümde projenin teknik uygulamalarından elde edilen bulgular bileşen bazında aktarılmaktadır. Her alt bölüm ilgili teknolojinin nasıl yapılandırıldığını ve elde edilen sonuçları açıklamaktadır.
 3.1 VLAN ve Inter-VLAN Yapılandırması
-Kampüs ağı aşağıdaki VLAN'lara bölünmüştür. Her VLAN bir kampüs birimini ya da kullanıcı grubunu temsil etmekte; ayrı yayın (broadcast) alanı oluşturarak ağ güvenliğini ve performansını artırmaktadır.
+İnternet kafe ağı aşağıdaki VLAN'lara bölünmüştür. Her VLAN bir internet kafe birimini ya da kullanıcı grubunu temsil etmekte; ayrı yayın (broadcast) alanı oluşturarak ağ güvenliğini ve performansını artırmaktadır.
 
 VLAN ID	Ad	Bölüm / Kullanım	Ağ Adresi
 10	YONETIM	İdari Personel & Yönetim	192.168.10.0/24
@@ -98,10 +110,10 @@ Erişim Denetim Listeleri (ACL) ile belirli trafik akışları izin ya da engel 
 •	Yönetim VLAN (99) yalnızca ağ yöneticisi IP adresinden erişilebilir
 •	Genişletilmiş ACL'ler, hedef IP ve port bazında detaylı filtreleme sağlamaktadır
 3.5 Firewall Entegrasyonu
-Cisco ASA Firewall, kampüs ağını internetten ayıran güvenlik sınırına (perimeter) konumlandırılmıştır. Güvenlik bölgeleri (security zones) aşağıdaki gibi tanımlanmıştır:
+Cisco ASA Firewall, internet kafe ağını internetten ayıran güvenlik sınırına (perimeter) konumlandırılmıştır. Güvenlik bölgeleri (security zones) aşağıdaki gibi tanımlanmıştır:
 
 Bölge	Güvenlik Düzeyi	Açıklama
-Inside	100 (En Yüksek)	Kampüs iç ağı – tam güvenilir
+Inside	100 (En Yüksek)	İnternet kafe iç ağı – tam güvenilir
 DMZ	50 (Orta)	Sunucu bölgesi – kontrollü erişim
 Outside	0 (En Düşük)	İnternet – güvensiz
 
@@ -118,27 +130,25 @@ Firewall politikaları; dışarıdan içeriye gelen trafiği varsayılan olarak 
 •	LACP modu active/active olarak yapılandırılmıştır
 •	EtherChannel durumu show etherchannel summary ile doğrulanmıştır
 3.8 Kablosuz Ağ (Wi-Fi) Desteği
-Kampüs genelindeki ortak alanlara (kafeterya, kütüphane, koridorlar) kablosuz erişim noktaları (AP) yerleştirilmiştir. Her erişim noktası ilgili VLAN'a trunk bağlantı üzerinden bağlanmış; SSID politikaları kullanıcı grubuna göre ayrılmıştır.
+İnternet kafenin ortak alanlarına (müşteri salonu, bekleme köşesi, giriş) kablosuz erişim noktaları (AP) yerleştirilmiştir. Her erişim noktası ilgili VLAN'a trunk bağlantı üzerinden bağlanmış; SSID politikaları kullanıcı grubuna göre ayrılmıştır.
 •	KampusNet_Ogrenci: Öğrenci VLAN (30) – şifrelenmiş WPA2
 •	KampusNet_Personel: Akademik VLAN (20) – şifrelenmiş WPA2 Enterprise
 •	KampusNet_Misafir: Misafir VLAN (50) – açık, internet erişimi kısıtlı
  
 4. Sonuç
-Bu proje kapsamında Marmara Üniversitesi kampüsü için gerçekçi bir CAN mimarisi tasarlanmış ve Cisco Packet Tracer ortamında başarıyla simüle edilmiştir. Uygulanan çözüm; ağ güvenliği, yüksek erişilebilirlik, dinamik yönlendirme ve kablosuz bağlantı gibi modern kurumsal ağ gereksinimlerini karşılamaktadır.
+Bu proje kapsamında bir internet kafe için gerçekçi bir LAN mimarisi tasarlanmış ve Cisco Packet Tracer ortamında başarıyla simüle edilmiştir. Uygulanan çözüm; ağ güvenliği, yüksek erişilebilirlik, dinamik yönlendirme ve kablosuz bağlantı gibi modern kurumsal ağ gereksinimlerini karşılamaktadır.
 VLAN segmentasyonu ile ağ trafiği mantıksal olarak izole edilmiş; Inter-VLAN yönlendirme ile birimler arası kontrollü iletişim sağlanmıştır. OSPF protokolü sayesinde topoloji değişikliklerine otomatik adapte olabilen dinamik bir yönlendirme altyapısı kurulmuştur.
 HSRP ile çekirdek katman yedekliliği garanti altına alınmış; EtherChannel ile kritik bağlantılarda yüksek bant genişliği elde edilmiştir. ACL ve Firewall bileşenlerinin entegrasyonu, ağ güvenliğini çok katmanlı biçimde sağlamıştır.
-Sonuç olarak tasarlanan ağ mimarisi; yönetilebilir, güvenli, yüksek performanslı ve ölçeklenebilir bir kampüs ağı ihtiyacını karşılamakta olup gerçek dünya uygulamalarına model teşkil edecek niteliktedir.
+Sonuç olarak tasarlanan ağ mimarisi; yönetilebilir, güvenli, yüksek performanslı ve ölçeklenebilir bir internet kafe ağı ihtiyacını karşılamakta olup gerçek dünya uygulamalarına model teşkil edecek niteliktedir.
  
 5. GitHub
 Projeye ait tüm Cisco Packet Tracer dosyaları (.pkt) ve bu rapor aşağıdaki GitHub deposuna yüklenmiştir. Depo bağlantısı ve yükleme doğrulaması aşağıda verilmektedir.
 GitHub Deposu Bağlantısı:
-https://github.com/kullanici-adi/BLM2006-CAN-Projesi
-Not: GitHub bağlantısı ve yükleme ekran görüntüsü, sunum öncesinde (04 Mayıs 2026 23:59) proje dosyaları yüklendikten sonra bu alana eklenecektir.
- 
+https://github.com/HuseyinEkiz/Internet-Kafe-LAN-Network-Tasarimi/
+
 6. Kaynakça
 [1] Forouzan, B. A. (2022). Data Communications and Networking (5. Baskı). McGraw-Hill.
 [2] Cisco Systems. (2024). OSPF Configuration Guide – Cisco IOS XE. Cisco Press.
 [3] Cisco Systems. (2024). QoS & Security Configuration Guide – Cisco IOS XE. Cisco Press.
 [4] Stallings, W. (2021). Data and Computer Communications (10. Baskı). Pearson.
 [5] Cisco Networking Academy. (2024). CCNA: Switching, Routing, and Wireless Essentials. Cisco NetAcad.
-
