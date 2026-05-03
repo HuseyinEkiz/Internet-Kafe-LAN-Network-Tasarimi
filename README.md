@@ -1,154 +1,131 @@
-İnternet Kafe Ağ Tasarımı
-Bilişim Teknolojileri Departmanı
-BLM2006 – Bilgisayar Ağlarına Giriş
-
-PROJE FİNAL RAPORU
-İnternet Kafe LAN (Local Area Network) Tasarımı
-
-Grup Üyeleri
-Hüseyin Ekiz – 170424051
-Cem Anıl Erdem – 170424041
-Ders
-BLM2006 – Bilgisayar Ağlarına Giriş
-Kullanılan Araçlar
-Cisco Packet Tracer
-Tarih
-Mayıs 2026
- 
+Internet Kafe Ag Tasarimi 
+Bilisim Teknolojileri Departmani 
+BLM2006 - Bilgisayar Aglarina Giris 
+PROJE FINAL RAPORU 
+Internet Kafe LAN (Local Area Network) Tasarimi 
  
-İçindekiler
-1. Giriş
-2. Yöntem
-   2.1 Proje Kapsamı ve Hedefler
-   2.2 Kullanılan Teknolojiler ve Yazılımlar
-   2.3 Ağ Tasarım Aşamaları
-3. Bulgular
-   3.1 VLAN ve Inter-VLAN Yapılandırması
-   3.2 OSPF Dinamik Yönlendirme
-   3.3 NAT ve İnternet Erişimi
-   3.4 ACL ve Güvenlik Politikaları
-   3.5 Firewall Entegrasyonu
-   3.6 HSRP ile Yüksek Erişilebilirlik
-   3.7 EtherChannel ile Bant Genişliği Artırımı
-   3.8 Kablosuz Ağ (Wi-Fi) Desteği
-4. Sonuç
-5. GitHub
-6. Kaynakça
- 
-1. Giriş
-Bu proje, bir internet kafenin tüm bilgisayar sistemlerinin, sunucularının ve ağ cihazlarının güvenilir, kesintisiz ve yüksek performanslı bir ağ altyapısı üzerinden birbiriyle iletişim kurmasını sağlamak amacıyla tasarlanmış bir LAN (Local Area Network – Yerel Alan Ağı) mimarisini içermektedir.
-Günümüz internet kafelerinde eş zamanlı olarak onlarca kullanıcı ağ kaynaklarını yoğun biçimde kullanmaktadır. Bu durum, ağ yönetimini, güvenliğini ve erişilebilirliğini kritik bir mühendislik sorunu hâline getirmektedir. Geleneksel düz (flat) ağ mimarileri, büyük ölçekli ortamlarda yayın fırtınaları, yetersiz güvenlik izolasyonu ve ölçeklenebilirlik sorunlarına yol açmaktadır.
-Bu proje kapsamında geliştirilen çözüm; VLAN tabanlı ağ segmentasyonu, Inter-VLAN yönlendirme, OSPF dinamik yönlendirme protokolü, NAT ile internet erişimi, ACL ve Firewall ile katmanlı güvenlik, HSRP ile yedeklilik ve EtherChannel ile yüksek bant genişliği bileşenlerini bir arada kullanarak profesyonel düzeyde bir internet kafe ağı ortaya koymaktadır. Kablosuz (Wi-Fi) erişim noktaları ile de mobil kullanıcı desteği sağlanmaktadır.
-Tüm tasarım ve simülasyon çalışmaları Cisco Packet Tracer ortamında gerçekleştirilmiş; konfigürasyonlar IOS komut satırı arayüzü (CLI) kullanılarak uygulanmıştır.
- 
-2. Yöntem
-2.1 Proje Kapsamı ve Hedefler
-Proje aşağıdaki temel hedefleri karşılayacak biçimde tasarlanmıştır:
-•	İnternet kafe genelinde birimleri mantıksal olarak ayıran VLAN yapısı oluşturmak
-•	VLAN'lar arası iletişimi yönetilen yönlendirme ile sağlamak (Inter-VLAN Routing)
-•	OSPF protokolü ile dinamik ve ölçeklenebilir yönlendirme gerçekleştirmek
-•	NAT aracılığıyla tüm iç ağın güvenli biçimde internete çıkışını sağlamak
-•	ACL kuralları ve Firewall ile yetkisiz erişimleri engellemek
-•	HSRP ile çekirdek katman yedekliliğini garanti altına almak
-•	EtherChannel ile anahtar (switch) bağlantılarında bant genişliğini artırmak
-•	Kablosuz erişim noktaları ile mobil kullanıcılara ağ erişimi sunmak
-
-2.2 Kullanılan Teknolojiler ve Yazılımlar
-Proje boyunca kullanılan temel teknolojiler ve araçlar aşağıdaki tabloda özetlenmiştir:
-
-Teknoloji / Araç	Amaç / Kullanım Alanı
-Cisco Packet Tracer	Ağ simülasyonu ve topoloji tasarımı
-VLAN (802.1Q)	Ağ segmentasyonu ve yayın alanı kontrolü
-Inter-VLAN Routing	VLAN'lar arası katman-3 iletişim
-OSPF	Dinamik yönlendirme protokolü
-NAT / PAT	İç IP adreslerin internet üzerinde gizlenmesi
-ACL (Standart & Genişletilmiş)	Trafik filtreleme ve erişim denetimi
-Firewall (ASA)	Güvenlik bölgesi yönetimi ve saldırı koruması
-HSRP	Çekirdek yönlendirici yedekliliği ve failover
-EtherChannel (LACP)	Çoklu bağlantı birleştirme ile bant genişliği artırımı
-Wi-Fi (802.11)	Kablosuz istemci erişimi
-
-2.3 Ağ Tasarım Aşamaları
-Proje aşağıdaki aşamalar izlenerek geliştirilmiştir:
-Aşama 1 – Gereksinimlerin Belirlenmesi
-İnternet kafenin ağ ihtiyaçları analiz edilmiş; müşteri, personel ve yönetim kullanıcı kategorileri belirlenmiştir. Her kategori için ayrı VLAN ve güvenlik politikaları tanımlanmıştır.
-Aşama 2 – Topoloji Tasarımı
-Üç katmanlı hiyerarşik ağ modeli (Çekirdek – Dağıtım – Erişim) benimsenmiştir. Çekirdek katmanda yedekli yönlendiriciler (HSRP), dağıtım katmanında katman-3 anahtarlar ve erişim katmanında uç cihazlara bağlı katman-2 anahtarlar konumlandırılmıştır.
-Aşama 3 – Konfigürasyon ve Test
-Cisco Packet Tracer üzerinde tüm cihazlar konfigüre edilmiş; bağlantı testleri ping, traceroute ve simülasyon modu aracılığıyla doğrulanmıştır.
- 
-3. Bulgular
-Bu bölümde projenin teknik uygulamalarından elde edilen bulgular bileşen bazında aktarılmaktadır. Her alt bölüm ilgili teknolojinin nasıl yapılandırıldığını ve elde edilen sonuçları açıklamaktadır.
-3.1 VLAN ve Inter-VLAN Yapılandırması
-İnternet kafe ağı aşağıdaki VLAN'lara bölünmüştür. Her VLAN bir internet kafe birimini ya da kullanıcı grubunu temsil etmekte; ayrı yayın (broadcast) alanı oluşturarak ağ güvenliğini ve performansını artırmaktadır.
-
-VLAN ID	Ad	Bölüm / Kullanım	Ağ Adresi
-10	YONETIM	İdari Personel & Yönetim	192.168.10.0/24
-20	AKADEMIK	Akademik Birimler & Öğretim Üyeleri	192.168.20.0/24
-30	OGRENCI	Öğrenci Laboratuvarları	192.168.30.0/24
-40	SUNUCU	Sunucu Odası (DNS, DHCP, Web)	192.168.40.0/24
-50	MISAFIR	Misafir Wi-Fi Erişimi	192.168.50.0/24
-99	YONETIM_AG	Ağ Yönetim VLAN (Out-of-Band)	192.168.99.0/24
-
-Trunk bağlantılar (802.1Q) anahtarlar ile çekirdek yönlendirici arasında yapılandırılmış; her trunk portta tüm VLAN'ların geçişine izin verilmiştir. Inter-VLAN yönlendirme, çekirdek katman yönlendiricisinde alt arayüzler (subinterface) aracılığıyla sağlanmıştır.
-3.2 OSPF Dinamik Yönlendirme
-Ağ içindeki yönlendirme, OSPF (Open Shortest Path First) protokolü ile otomatik olarak yönetilmektedir. OSPF, topoloji değişikliklerini dinamik olarak algılayarak yönlendirme tablolarını günceller; statik yönlendirmeye kıyasla çok daha ölçeklenebilir bir çözüm sunar.
-•	Tüm iç yönlendiriciler OSPF Alan 0 (Backbone) içinde tanımlanmıştır
-•	Her yönlendirici üzerinde network komutları ile ilgili arayüzler OSPF'e dahil edilmiştir
-•	Loopback arayüzler OSPF Router-ID olarak kullanılmıştır
-•	Komşuluk (neighbor) ilişkileri simülasyon ortamında doğrulanmıştır
-3.3 NAT ve İnternet Erişimi
-İç ağdaki özel (private) IP adreslerinin internete çıkabilmesi için Sınır Yönlendiricisi (Border Router) üzerinde NAT/PAT (Port Address Translation) yapılandırılmıştır.
-•	İç (inside) arayüz: LAN'a bağlı yönlendirici arayüzü
-•	Dış (outside) arayüz: İSS bağlantı arayüzü
-•	Overload (PAT) ile tek bir genel IP üzerinden tüm iç kullanıcılar internete çıkmaktadır
-•	NAT çevirileri show ip nat translations komutuyla doğrulanmıştır
-3.4 ACL ve Güvenlik Politikaları
-Erişim Denetim Listeleri (ACL) ile belirli trafik akışları izin ya da engel politikalarına tabi tutulmuştur. Proje kapsamında uygulanan güvenlik politikaları şunlardır:
-•	Misafir VLAN (50) kullanıcıları yalnızca internete erişebilir; iç ağa erişim engellenmiştir
-•	Öğrenci VLAN (30) kullanıcıları sunucu VLAN'ına (40) yalnızca HTTP/HTTPS üzerinden erişebilir
-•	Yönetim VLAN (99) yalnızca ağ yöneticisi IP adresinden erişilebilir
-•	Genişletilmiş ACL'ler, hedef IP ve port bazında detaylı filtreleme sağlamaktadır
-3.5 Firewall Entegrasyonu
-Cisco ASA Firewall, internet kafe ağını internetten ayıran güvenlik sınırına (perimeter) konumlandırılmıştır. Güvenlik bölgeleri (security zones) aşağıdaki gibi tanımlanmıştır:
-
-Bölge	Güvenlik Düzeyi	Açıklama
-Inside	100 (En Yüksek)	İnternet kafe iç ağı – tam güvenilir
-DMZ	50 (Orta)	Sunucu bölgesi – kontrollü erişim
-Outside	0 (En Düşük)	İnternet – güvensiz
-
-Firewall politikaları; dışarıdan içeriye gelen trafiği varsayılan olarak engeller, içeriden dışarıya giden trafiğe ise izin verir. DMZ'deki sunuculara belirli servis portları üzerinden dışarıdan erişim statik NAT ile sağlanmaktadır.
-3.6 HSRP ile Yüksek Erişilebilirlik
-Çekirdek katmanda iki yönlendirici, HSRP (Hot Standby Router Protocol) ile yapılandırılmıştır. Bu sayede aktif yönlendirici arıza verdiğinde, yedek yönlendirici saniyeler içinde devreye girerek ağın kesintisiz çalışması sağlanmaktadır.
-•	HSRP Grubu 1: Sanal IP 192.168.10.1 – VLAN 10 geçidi
-•	Aktif Router önceliği 110, Standby Router önceliği 100 olarak ayarlanmıştır
-•	Preempt özelliği etkinleştirilerek kurtarma sonrası aktif rolün iade edilmesi sağlanmıştır
-•	Failover süresi simülasyon testleriyle 10 saniyenin altında ölçülmüştür
-3.7 EtherChannel ile Bant Genişliği Artırımı
-Çekirdek ve dağıtım katmanı anahtarları arasındaki bağlantılarda EtherChannel (LACP – IEEE 802.3ad) uygulanmıştır. İki fiziksel bağlantı mantıksal olarak birleştirilerek bant genişliği iki katına çıkarılmış ve bağlantı yedekliliği sağlanmıştır.
-•	Port-channel 1: Çekirdek Switch – Dağıtım Switch 1 arası (2x FastEthernet)
-•	LACP modu active/active olarak yapılandırılmıştır
-•	EtherChannel durumu show etherchannel summary ile doğrulanmıştır
-3.8 Kablosuz Ağ (Wi-Fi) Desteği
-İnternet kafenin ortak alanlarına (müşteri salonu, bekleme köşesi, giriş) kablosuz erişim noktaları (AP) yerleştirilmiştir. Her erişim noktası ilgili VLAN'a trunk bağlantı üzerinden bağlanmış; SSID politikaları kullanıcı grubuna göre ayrılmıştır.
-•	KampusNet_Ogrenci: Öğrenci VLAN (30) – şifrelenmiş WPA2
-•	KampusNet_Personel: Akademik VLAN (20) – şifrelenmiş WPA2 Enterprise
-•	KampusNet_Misafir: Misafir VLAN (50) – açık, internet erişimi kısıtlı
- 
-4. Sonuç
-Bu proje kapsamında bir internet kafe için gerçekçi bir LAN mimarisi tasarlanmış ve Cisco Packet Tracer ortamında başarıyla simüle edilmiştir. Uygulanan çözüm; ağ güvenliği, yüksek erişilebilirlik, dinamik yönlendirme ve kablosuz bağlantı gibi modern kurumsal ağ gereksinimlerini karşılamaktadır.
-VLAN segmentasyonu ile ağ trafiği mantıksal olarak izole edilmiş; Inter-VLAN yönlendirme ile birimler arası kontrollü iletişim sağlanmıştır. OSPF protokolü sayesinde topoloji değişikliklerine otomatik adapte olabilen dinamik bir yönlendirme altyapısı kurulmuştur.
-HSRP ile çekirdek katman yedekliliği garanti altına alınmış; EtherChannel ile kritik bağlantılarda yüksek bant genişliği elde edilmiştir. ACL ve Firewall bileşenlerinin entegrasyonu, ağ güvenliğini çok katmanlı biçimde sağlamıştır.
-Sonuç olarak tasarlanan ağ mimarisi; yönetilebilir, güvenli, yüksek performanslı ve ölçeklenebilir bir internet kafe ağı ihtiyacını karşılamakta olup gerçek dünya uygulamalarına model teşkil edecek niteliktedir.
- 
-5. GitHub
-Projeye ait tüm Cisco Packet Tracer dosyaları (.pkt) ve bu rapor aşağıdaki GitHub deposuna yüklenmiştir. Depo bağlantısı ve yükleme doğrulaması aşağıda verilmektedir.
-GitHub Deposu Bağlantısı:
-https://github.com/HuseyinEkiz/Internet-Kafe-LAN-Network-Tasarimi/
-
-6. Kaynakça
-[1] Forouzan, B. A. (2022). Data Communications and Networking (5. Baskı). McGraw-Hill.
-[2] Cisco Systems. (2024). OSPF Configuration Guide – Cisco IOS XE. Cisco Press.
-[3] Cisco Systems. (2024). QoS & Security Configuration Guide – Cisco IOS XE. Cisco Press.
-[4] Stallings, W. (2021). Data and Computer Communications (10. Baskı). Pearson.
-[5] Cisco Networking Academy. (2024). CCNA: Switching, Routing, and Wireless Essentials. Cisco NetAcad.
+Grup Uyeleri 
+Huseyin Ekiz - 170424051 
+Cem Anil Erdem - 170424041 
+ 
+Ders 
+BLM2006 - Bilgisayar Aglarina Giris 
+ 
+Kullanilan Araclar 
+Cisco Packet Tracer 
+ 
+Tarih 
+Mayis 2026 
+ 
+Icindekiler 
+1.	Giris 
+2.	Yontem 
+2.1	Proje Kapsami ve Hedefler 
+2.2	Kullanilan Teknolojiler ve Yazilimlar 
+2.3	Ag Tasarim Asamalari 
+3.	Bulgular 
+3.1	VLAN Yapilandirmasi 
+3.2	NAT ve Internet Erisimi 
+3.3	Firewall Entegrasyonu 
+3.4	Kablosuz Ag (Wi-Fi) Destegi 
+4.	Sonuc 
+5.	GitHub 
+6.	Kaynakca 
+  
+1.	Giris 
+Bu proje, bir internet kafenin tum bilgisayar sistemlerinin, sunucularinin ve ag cihazlarinin guvenilir, kesintisiz ve yuksek performansli bir ag altyapisi uzerinden birbirleriyle iletisim kurmasini saglamak amaciyla tasarlanmis bir LAN (Local Area Network - Yerel Alan Agi) mimarisini icermektedir. 
+ 
+Gunumuz internet kafelerinde es zamanli olarak onlarca kullanici ag kaynaklarini yogun bicimde kullanmaktadir. Bu durum, ag yonetimini, guvenligini ve erisebilirligi kritik bir muhendislik sorunu haline getirmektedir. Geleneksel duz (flat) ag mimarileri, buyuk olcekli ortamlarda yayin firtinaları, yetersiz guvenlik izolasyonu ve olceklenebilirlik sorunlarina yol acmaktadir. 
+ 
+Bu proje kapsaminda gelistirilen cozum; VLAN tabanli ag segmentasyonu, NAT ile internet erisimi, Firewall ile guvenlik ve kablosuz (Wi-Fi) erisim noktalari bilesenlerini bir arada kullanarak pratik duzeyde bir internet kafe agi ortaya koymaktadir. 
+ 
+Tum tasarim ve simulasyon calismalari Cisco Packet Tracer ortaminda gerceklestirilmis; konfigurasyonlar IOS komut satiri arayuzu (CLI) kullanilarak uygulanmistir. 
+ 
+2.	Yontem 
+2.1	Proje Kapsami ve Hedefler 
+Proje asagidaki temel hedefleri karsilayacak bicimde tasarlanmistir: 
+•	Internet kafe genelinde birimleri mantiksal olarak ayiran VLAN yapisi olusturmak 
+•	NAT araciligiyla tum ic agin guvenli bicimde internete cikisini saglamak 
+•	Firewall ile yetkisiz erisimleri engellemek ve ag guvenligini saglamak 
+•	Kablosuz erisim noktalari ile mobil kullanicilara ag erisimi sunmak 
+ 
+2.2	Kullanilan Teknolojiler ve Yazilimlar 
+Proje boyunca kullanilan temel teknolojiler ve araclar asagidaki tabloda ozetlenmistir: 
+ 
+Teknoloji / Arac 	Amac / Kullanim Alani 
+Cisco Packet Tracer 	Ag simulasyonu ve topoloji tasarimi 
+VLAN (802.1Q) 	Ag segmentasyonu ve yayin alani kontrolu 
+NAT / PAT 	Ic IP adreslerin internet uzerinde gizlenmesi 
+Firewall 	Guvenlik bolgesi yonetimi 
+Wi-Fi (802.11) 	Kablosuz istemci erisimi 
+ 
+2.3	Ag Tasarim Asamalari 
+Proje asagidaki asamalar izlenerek gelistirilmistir: 
+ 
+Asama 1 - Gereksinimlerin Belirlenmesi 
+Internet kafenin ag ihtiyaclari analiz edilmis; musteri, personel ve yonetim kullanici kategorileri belirlenmistir. Her kategori icin ayri VLAN ve guvenlik politikalari tanimlanmistir. 
+ 
+Asama 2 - Topoloji Tasarimi 
+Iki katmanli ag modeli (Dagitim - Erisim) benimsenin. Dagitim katmaninda yonlendirici ve anahtarlar, erisim katmaninda uc cihazlara bagli katman-2 anahtarlar konumlandirilmistir. 
+ 
+Asama 3 - Konfigurasyon ve Test 
+Cisco Packet Tracer uzerinde tum cihazlar konfiguere edilmis; baglanti testleri ping ve simulasyon modu araciligiyla dogrulanmistir. 
+ 
+3.	Bulgular 
+Bu bolumde projenin teknik uygulamalarindan elde edilen bulgular bilesen bazinda aktarilmaktadir. Her alt bolum ilgili teknolojinin nasil yapilandirildigini ve elde edilen sonuclari aciklamaktadir. 
+ 
+3.1	VLAN Yapilandirmasi 
+Internet kafe agi asagidaki VLAN'lara bolunmustur. Her VLAN bir internet kafe birimini ya da kullanici grubunu temsil etmekte; ayri yayin (broadcast) alani olusturarak ag guvenligini ve performansini artirmaktadir. 
+ 
+VLAN ID 	Ad 	Bolum / Kullanim 	Ag Adresi 
+20 	PERSONEL 	Personel Bilgisayarlari 	192.168.20.0/24 
+30 	MUSTERI 	Musteri Bilgisayarlari 	192.168.30.0/24 
+40 	SUNUCU 	Sunucu Odasi (DNS, DHCP, Web) 	192.168.40.0/24 
+50 	MISAFIR 	Misafir Wi-Fi Erisimi 	192.168.50.0/24 
+ 
+Trunk baglantilar (802.1Q) anahtarlar ile yonlendirici arasinda yapilandirilmis; her trunk portta tum VLAN'larin gecisine izin verilmistir. Her VLAN icin ayri IP adresi araligi tanimlanarak broadcast domainler birbirinden yalitilmistir. 
+ 
+3.2	NAT ve Internet Erisimi 
+Ic agdaki ozel (private) IP adreslerinin internete cikabilmesi icin Sinir Yonlendiricisi (Border Router) uzerinde NAT/PAT (Port Address Translation) yapilandirilmistir. 
+ 
+•	Ic (inside) arayuz: LAN'a bagli yonlendirici arayuzu 
+•	Dis (outside) arayuz: ISS baglanti arayuzu 
+•	Overload (PAT) ile tek bir genel IP uzerinden tum ic kullanicilar internete cikmaktadir 
+•	NAT cevirimleri show ip nat translations komutuyla dogrulanmistir 
+ 
+3.3	Firewall Entegrasyonu 
+Firewall, internet kafe agini internetten ayiran guvenlik sinirına (perimeter) konumlandirilmistir. Guvenlik bolgeleri (security zones) asagidaki gibi tanimlanmistir: 
+ 
+Bolge 	Guvenlik Duzeyi 	Aciklama 
+Inside 	100 (En Yuksek) 	Internet kafe ic agi - tam guvenilir 
+Outside 	0 (En Dusuk) 	Internet - guvensiz 
+ 
+Firewall politikalari; disaridan iceriye gelen trafigi varsayilan olarak engeller, iceriden disariya giden trafige ise izin verir. Bu sayede ic ag, internet kaynakli tehditlere karsi korunmaktadir. 
+ 
+3.4	Kablosuz Ag (Wi-Fi) Destegi 
+Internet kafenin ortak alanlarina (musteri salonu, bekleme kosesi, giris) kablosuz erisim noktalari (AP) yerlestirilmistir. Her erisim noktasi ilgili VLAN'a trunk baglanti uzerinden baglanmis; SSID politikalari kullanici grubuna gore ayrilmistir. 
+ 
+•	KampusNet_Personel: Personel VLAN (20) - sifrelenmis WPA2 
+•	KampusNet_Musteri: Musteri VLAN (30) - sifrelenmis WPA2 
+•	KampusNet_Misafir: Misafir VLAN (50) - acik, internet erisimi kisitli 
+ 
+4.	Sonuc 
+Bu proje kapsaminda bir internet kafe icin gercekci bir LAN mimarisi tasarlanmis ve Cisco Packet Tracer ortaminda basariyla simule edilmistir. Uygulanan cozum; ag guvenligi, NAT ile internet erisimi ve kablosuz baglanti gibi temel ag gereksinimlerini karsilamaktadir. 
+ 
+VLAN segmentasyonu ile ag trafigi mantiksal olarak izole edilmis; farkli kullanici gruplari (yonetim, personel, musteri, misafir) birbirinden ayrilmistir. NAT/PAT yapilandirmasi sayesinde tum ic kullanicilar tek bir genel IP adresi uzerinden guvenli bicimde internete erisebilmektedir. 
+ 
+Firewall entegrasyonu ile disaridan gelen yetkisiz erisimler engellenmiş; ic agin guvenligi saglanmistir. Kablosuz erisim noktalari araciligiyla ise mobil kullanicilara da ag erisimi sunulmustur. 
+ 
+Sonuc olarak tasarlanan ag mimarisi; yonetilebilir, guvenli ve internet kafenin temel ihtiyaclarini karsilayan islevsel bir yapi ortaya koymaktadir. 
+ 
+5.	GitHub 
+Projeye ait tum Cisco Packet Tracer dosyalari (.pkt) ve bu rapor asagidaki GitHub deposuna yuklenmistir. Depo baglantisi ve yukleme dogrulamasi asagida verilmektedir. 
+ 
+GitHub Deposu Baglantisi: 
+https://github.com/HuseyinEkiz/Internet-Kafe-LAN-Network-Tasarimi/ 
+ 
+6.	Kaynakca 
+[1]	Forouzan, B. A. (2022). Data Communications and Networking (5. Baski). McGraw-Hill. 
+[2]	Stallings, W. (2021). Data and Computer Communications (10. Baski). Pearson. 
+[3]	Cisco Networking Academy. (2024). CCNA: Introduction to Networks. Cisco NetAcad. 
+[4]	Cisco Systems. (2024). NAT Configuration Guide - Cisco IOS XE. Cisco Press. 
